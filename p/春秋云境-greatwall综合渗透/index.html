@@ -378,6 +378,7 @@
     <blockquote>
 <p>在这个靶场中，您将扮演一名渗透测试工程师，接受雇佣任务来评估“SmartLink Technologies Ltd.”公司的网络安全状况。 您的任务是首先入侵该公司暴露在公网上的应用服务，然后运用后渗透技巧深入 SmartLink公司的内部网络。在这个过程中，您将寻找潜在的弱点和漏洞，并逐一接管所有服务，从而控制整个内部网络。靶场中共设置了6个Flag，它们分布在不同的靶机上，您需要找到并获取这些 Flag 作为您的成就目标。</p>
 </blockquote>
+<meta name="referrer" content="no-referrer" />
 <h2 id="前置知识">前置知识
 </h2><p>建议把以下知识点吃透再去打靶机，建立综合渗透思维</p>
 <blockquote>
@@ -404,12 +405,12 @@
 <h2 id="813071173-公网入口">8.130.71.173-公网入口
 </h2><p>使用fscan进行扫描</p>
 <blockquote>
-<p>8.130.71.173:22 open
-8.130.71.173:8080 open
-8.130.71.173:80 open
-[<em>] WebTitle http://8.130.71.173       code:200 len:10887  title:&quot;&quot;
-[</em>] WebTitle http://8.130.71.173:8080  code:200 len:1027   title:Login Form
-[+] PocScan http://8.130.71.173:8080 poc-yaml-thinkphp5023-method-rce poc1</p>
+<p>8.130.71.173:22 open</p>
+<p>8.130.71.173:8080 open</p>
+<p>8.130.71.173:80 open</p>
+<p>WebTitle http://8.130.71.173       code:200 len:10887  title:&quot;&quot;</p>
+<p>WebTitle http://8.130.71.173:8080  code:200 len:1027   title:Login Form</p>
+<p>PocScan http://8.130.71.173:8080 poc-yaml-thinkphp5023-method-rce poc1</p>
 </blockquote>
 <p>发现<code>8080</code>端口存在<code>thinkphp5023-method-rce</code>漏洞，工具getshell一把梭</p>
 <p><img src="https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220091922723-75050722.png"

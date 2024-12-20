@@ -7,7 +7,710 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>关根</copyright>
-        <lastBuildDate>Thu, 19 Dec 2024 20:50:49 +0800</lastBuildDate><atom:link href="https://flowers-boy.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 20 Dec 2024 16:59:37 +0800</lastBuildDate><atom:link href="https://flowers-boy.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>蓝队面试</title>
+        <link>https://flowers-boy.github.io/p/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95/</link>
+        <pubDate>Fri, 20 Dec 2024 16:59:37 +0800</pubDate>
+        
+        <guid>https://flowers-boy.github.io/p/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95/</guid>
+        <description>&lt;img src="https://flowers-boy.github.io/p/%E8%93%9D%E9%98%9F%E9%9D%A2%E8%AF%95/%E9%9D%A2%E8%AF%95.jpeg" alt="Featured image of post 蓝队面试" /&gt;&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34; /&gt;
+&lt;h2 id=&#34;sql注入分类&#34;&gt;sql注入分类
+&lt;/h2&gt;&lt;p&gt;**原理：**没有对用户输入项进行验证和处理直接拼接到查询语句中&lt;/p&gt;
+&lt;p&gt;查询语句中插⼊恶意SQL代码传递后台sql服务器分析执行&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;**从注入参数类型分：**数字型注入、字符型注入&lt;/p&gt;
+&lt;p&gt;**从注入效果分：**报错注入、布尔注入、延时注入、联合注入、堆叠注入、宽字节注入&lt;/p&gt;
+&lt;p&gt;**从提交方式分：**GET注入、POST注入、HTTP头注入、COOKIE注入&lt;/p&gt;
+&lt;p&gt;**报错注入用到的函数：**updatexml、floor、extractvalue，exp&lt;/p&gt;
+&lt;p&gt;**布尔盲注用到的函数：**substr，mid，left，right，ascii，ord，char，length&lt;/p&gt;
+&lt;p&gt;**时间盲注用到的函数：**sleep&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;SQL注入防御&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对关键函数或字符过滤：union select order by information_schema等&lt;/li&gt;
+&lt;li&gt;下载相关防范注入文件，通过incloude函数包含在网站配置文件里面&lt;/li&gt;
+&lt;li&gt;pdo预处理，使用预编译语句&lt;/li&gt;
+&lt;li&gt;添加白名单来规范输入验证方法&lt;/li&gt;
+&lt;li&gt;对客户端输入进行控制，限制特殊字符和函数的输入&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SQL注入绕过waf&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;大小写双写、双写关键字、空格、&lt;/li&gt;
+&lt;li&gt;使用编码：unioncode编码 十六进制编码 url编码&lt;/li&gt;
+&lt;li&gt;等价函数：mid，substr（），substring（） &amp;amp;&amp;amp;和||&amp;gt; and 和or =号可以用&amp;lt;&amp;gt;因为如果不大于不小于就是等于&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SQL注入写shell条件：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;知道web服务器的绝对路径&lt;/li&gt;
+&lt;li&gt;数据库具有root权限&lt;/li&gt;
+&lt;li&gt;secure_file_priv函数 没有特殊的值&lt;/li&gt;
+&lt;li&gt;PHP关闭魔术引号，php主动转义功能关闭&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;SQL写入shell的方式：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;通过本地写入into outfile函数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过日志写入需要对 general_log 和 general_log_file 变量进行更改&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;通过sqlmap &amp;ndash;os-shell命令写入&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;二次注入：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;后端代码对用户输入的数据进行了转义，然后在保存到数据库的时候是没有进行转 义，然后再从数据库当中取出数据的时候，没有对数据库中的特殊字符进行转义和验证，就可能 形成闭合，导致注入&lt;/li&gt;
+&lt;li&gt;防御：使用统一编码格式utf-8对用户输入的内容进行验证过滤&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;其他常见漏洞&#34;&gt;其他常见漏洞
+&lt;/h3&gt;&lt;h4 id=&#34;csrf&#34;&gt;csrf
+&lt;/h4&gt;&lt;p&gt;**原理：**跨站点请求伪造。盗用用户身份，以用户的名义发送恶意请求&lt;/p&gt;
+&lt;h4 id=&#34;ssrf&#34;&gt;ssrf
+&lt;/h4&gt;&lt;p&gt;**原理：**利用网络请求的服务当跳板攻击内部其他服务&lt;/p&gt;
+&lt;h4 id=&#34;文件包含&#34;&gt;文件包含
+&lt;/h4&gt;&lt;p&gt;**原理：**攻击者通过操纵应用程序对文件路径的处理，将恶意文件包含到应用程序中执行&lt;/p&gt;
+&lt;h4 id=&#34;文件上传&#34;&gt;文件上传
+&lt;/h4&gt;&lt;p&gt;**原理：**对上传文件无限制后缀以及类型或者处理缺陷、导致越过本身权限向服务器上马&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;绕过方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;上传特殊可解析后缀&lt;/p&gt;
+&lt;p&gt;上传.htaccess（可帮助修改文件扩展名）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;.user.ini文件里的意思是：所有的php文件都自动包含指定的文件
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;后缀大小写、双后缀名、空格（黑名单）&lt;/p&gt;
+&lt;p&gt;MIME、%00截断、0x00截断绕过（白名单）&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;在url中%00表示ascll码的0 ，而ascii码的0，表示字符串结束，所以当url中出现%00时就会认为读取已结束
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;0x00原理相同
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;文件头&lt;/p&gt;
+&lt;h4 id=&#34;xss&#34;&gt;xss
+&lt;/h4&gt;&lt;p&gt;**原理：**插入恶意脚本、实现对用户浏览器攻击&lt;/p&gt;
+&lt;p&gt;**类型：**存储、反射、dom&lt;/p&gt;
+&lt;p&gt;**反射和dom区别：**DOM-XSS是javascript处理输出、⽽反射性xss是后台程序处理&lt;/p&gt;
+&lt;h4 id=&#34;xxe&#34;&gt;xxe
+&lt;/h4&gt;&lt;p&gt;**原理：**解析用户传入的xml&lt;/p&gt;
+&lt;p&gt;**作用：**内⽹端⼝扫描、利⽤file协议等读取⽂件、攻击内⽹web应⽤使⽤get(struts2等)&lt;/p&gt;
+&lt;h2 id=&#34;如何判断文件上传一次攻击&#34;&gt;如何判断文件上传一次攻击
+&lt;/h2&gt;&lt;p&gt;响应包是200,返回的有没有路径,请求包的报文内容有没有上传木马,尝试访问路径,能不能执行命令&lt;/p&gt;
+&lt;h2 id=&#34;命令执行和代码执行&#34;&gt;命令执行和代码执行
+&lt;/h2&gt;&lt;p&gt;**命令执行：**Web应用的脚本代码在执行命令的时候过滤不严,从而注入一段攻击者能够控制的代 码,在服务器上以Web服务的后台权限远程执行恶意指令&lt;/p&gt;
+&lt;p&gt;**原因：**代码层过滤不严，系统的漏洞造成命令注入,调用的第三方组件存在代码执行漏洞常见执行 函数：exec、shell_exec、system、passthru、popen&lt;/p&gt;
+&lt;p&gt;**代码执行：**由于服务器对危险函数过滤不严,导致用户输入的一些字符串可以被转换成代码来执行, 从而造成代码执行&lt;/p&gt;
+&lt;p&gt;**原因：**用户能够控制函数输入,存在可执行代码的危险函数，常见执行函数：eval、assert、 preg_replace()&lt;/p&gt;
+&lt;h2 id=&#34;csrf-和-xss-和-xxe-有什么区别&#34;&gt;CSRF 和 XSS 和 XXE 有什么区别
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;XSS&lt;/strong&gt;是跨站脚本攻击，用户提交的数据中可以构造代码来执行，从而实现窃取用户信息等攻击。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;修复方式：&lt;/strong&gt; 对字符实体进行转义&lt;/p&gt;
+&lt;p&gt;使用HTTP Only来禁止JavaScript读取Cookie值&lt;/p&gt;
+&lt;p&gt;输入时校验&lt;/p&gt;
+&lt;p&gt;浏览器与Web应用端采用相同的字符编码&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CSRF&lt;/strong&gt;是跨站请求伪造攻击，是由于没有在关键操作执行时进行是否由用户自愿发起的确认，模仿合法用户对服务器发起请求 。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;修复方式：&lt;/strong&gt; 筛选出需要防范CSRF的页面然后嵌入Token&lt;/p&gt;
+&lt;p&gt;再次输入密码&lt;/p&gt;
+&lt;p&gt;检验Referer&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;XXE&lt;/strong&gt;是XML外部实体注入攻击，XML中可以通过调用实体来请求本地或者远程内容，和远程文件保护类似，会引发相关安全问题，例如敏感文件读取。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;修复方式：&lt;/strong&gt; XML解析库在调用时严格禁止对外部实体的解析&lt;/p&gt;
+&lt;h2 id=&#34;java框架漏洞&#34;&gt;JAVA框架漏洞
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;shiro是apache的java安全框架，用于执行身份验证、授权、密码和会话管理&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;使用shiro易于理解的API（程序接口），可以快速轻松对应用程序进行保护&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Shiro550原理&lt;/strong&gt;导致shiro反序列化的主要原因就是&lt;code&gt;shiro提供的记住密码功能&lt;/code&gt;，当用户打开这个功 能时会在请求包中生成一个cookie，cookie的value值是经过&lt;code&gt;序列化-&amp;gt;aes加密-&amp;gt;base64加密&lt;/code&gt;后 的字符串，关键在于aes加密的秘钥是&lt;code&gt;默认&lt;/code&gt;的，如果没有修改这个秘钥，就会导致反序列化漏洞， 攻击者可以构造恶意代码，将恶意代码&lt;code&gt;序列化-AES加密-base64加密&lt;/code&gt;后传入cookie，这样就导致 RCE漏洞。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Shiro 721原理&lt;/strong&gt;Shrio所使用的cookie里的rememberMe字段采用了&lt;code&gt;AES-128-CBC&lt;/code&gt;的加密模式， 这使得该字段可以被&lt;code&gt;padding oracle&lt;/code&gt; 攻击利用。攻击者可以使用一个合法有效的rememberMe  的cookie作为前缀来实施POA，然后制造一个特制的rememberMe来执行Java反序列化攻击。&lt;/p&gt;
+&lt;h4 id=&#34;shrio550和721的区别主要区别&#34;&gt;&lt;strong&gt;shrio550和721的区别主要区别&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;在于Shiro550使用已知&lt;code&gt;默认&lt;/code&gt;密码，只要有足够的密码，不需要 Rememberme的Cookie；Shiro721的AES加密的key为系统&lt;code&gt;随机生成&lt;/code&gt;，需要利用登录后的 rememberMe去爆破正确的key值。利用有效的RememberMe Cookie作为Padding Oracle  Attack的前缀，再去构造反序列化攻击。&lt;/p&gt;
+&lt;h4 id=&#34;fastjson反序列化漏洞原理&#34;&gt;&lt;strong&gt;fastjson反序列化漏洞原理：&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;&lt;code&gt;fastjson 是一个 有阿里开发的一个开源Java 类库，可以将 Java 对象转换为 JSON 格式(序列化)，当然它也可以将 JSON 字符串转换为 Java 对象（反序列化）&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;1、fastjson提供的反序列化功能允许用户传入json格式数据的时候&lt;code&gt;通过@type的value值指定任 意反序列化类名&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;2、fastjson的反序列化机制会将反序列的类进行实例化对象，并调用该对象的&lt;code&gt;setter和部分getter方法&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;3、恶意用户可以构造payload是目标应用的代码执行流程进入这部分setter和getter方法，如果 这些方法中存在Gadget，就会造成一些安全问题。&lt;/p&gt;
+&lt;p&gt;4、官方采取黑名单过滤的方法，对反序列化的类名进行校验，checkAutoType不断被绕过&lt;/p&gt;
+&lt;h4 id=&#34;log4j2原理&#34;&gt;&lt;strong&gt;log4j2原理：&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;&lt;code&gt;log4j2是apache下的java应用常见的开源日志库，是一个就Java的日志记录工具&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Apache Log4j2中存在&lt;code&gt;JNDI注入漏洞&lt;/code&gt;，主要原理是利用log4j2的日志输出jndi远程 对象时,&lt;code&gt;调用远程对象没做检查&lt;/code&gt;导致，程序将用户输入的数据进行日志记录时即可触发该漏洞并可 在目标服务器上执行任意代码。该漏洞利用过程需要找到一个能触发远程加载并应用配置的输入 点，迫使服务器远程加载和修改配置的前提下使目标系统通过JNDI远程获取数据库源，触发攻击者的恶意代码&lt;/p&gt;
+&lt;h4 id=&#34;struts2原理&#34;&gt;&lt;strong&gt;Struts2原理：&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;&lt;code&gt;将用户要求按照业务逻辑执行并且返回结果&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;用户提交表单数据并且验证失败时，后端会将用户之前提交的参数值使用&lt;code&gt;OGNL表达式 %{value}&lt;/code&gt;进行解析，然后重新填充到对应的表单数据中。&lt;/p&gt;
+&lt;p&gt;例如注册或登录页面，提交失败后端一般会默认返回之前提交的数据，由于后端使用 &lt;code&gt;%{value}&lt;/code&gt; 对提交的数据执行了一次 OGNL 表达式解析，所以可以直接构造 Payload 进行命令执行&lt;/p&gt;
+&lt;h4 id=&#34;weblogic&#34;&gt;&lt;strong&gt;Weblogic：&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;漏洞描述：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Weblogic Server中的RMI 通信使用T3协议在Weblogic Server和其它Java程序（客户端或者其它Weblogic Server实例）之间传输数据, 服务器实例会跟踪连接到应用程序的每个Java虚拟机（JVM）中, 并创建T3协议通信连接, 将流量传输到Java虚拟机。T3协议在开放WebLogic控制台端口的应用上默认开启。攻击者可以通过T3协议发送恶意的的反序列化数据, 进行反序列化, 实现对存在漏洞的weblogic组件的远程代码执行攻击（开放Weblogic控制台的7001端口，默认会开启T3协议服务，T3协议触发的Weblogic Server WLS Core Components中存在反序列化漏洞，攻击者可以发送构造的恶意T3协议数据，获取目标服务器权限。）&lt;/p&gt;
+&lt;p&gt;远程攻击者可利用该漏洞在未授权的情况下发送攻击数据，通过T3协议（EJB支持远程访问，且支持多种协议。这是Web Container和EJB Container的主要区别）在Weblogic Server中执行反序列化操作，利用RMI（远程方法调用） 机制的缺陷，通过JRMP协议（Java Remote Messaging Protocol：java远程消息交换协议）达到执行任意反序列化payload的目的。&lt;/p&gt;
+&lt;p&gt;**T3协议：**用于在Weblogic服务器和其他类型的Java程序之间传输信息的协议。Weblogic会跟踪连接到应用程序的每个Java虚拟机，要将流量传输到Java虚拟机，Weblogic会创建一个T3连接。该链接会通过消除在网络之间的多个协议来最大化效率，从而使用较少的操作系统资源。用于T3连接的协议还可以最大限度减少数据包大小，提高传输速度。&lt;/p&gt;
+&lt;p&gt;**RMI：**远程方法调用&lt;/p&gt;
+&lt;p&gt;使用协议：JRMP&lt;/p&gt;
+&lt;p&gt;T3就是对JRMP的优化。Java RMI 的基础通信协议是 JRMP ，但是也支持开发其他的协议来优 化 RMI 的传输，这里的 Weblogic 的 T3 协议就是其优化版本，相比于JRMP协议多了一些特 性。T3协议传输过程中就是序列化和反序列化方式&lt;/p&gt;
+&lt;p&gt;**利用：**将原本存在的序列化内容替换成我们payload的序列化内容，在传输完成后，进行反序列 化达成攻击的目的&lt;/p&gt;
+&lt;h4 id=&#34;jboss&#34;&gt;&lt;strong&gt;Jboss&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;JBoss是一个基于J2EE的开放源代码应用服务器，代码遵循LGPL许可，可以在任何商业应用中免 费使用；JBoss也是一个管理EJB的容器和服务器，支持EJB 1.1、EJB 2.0和EJB3规范。但JBoss核 心服务不包括支持servlet/JSP的WEB容器，一般与Tomcat或Jetty绑定使用。&lt;/p&gt;
+&lt;p&gt;两种利用方式，第一种是利用&lt;code&gt;未授权访问&lt;/code&gt;进入JBoss后台进行文件上传的漏洞；另一种是利用&lt;code&gt;Java 反序列化&lt;/code&gt;进行远程代码执行的漏洞&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;弱口令漏洞&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;system:password
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;weblogic:weblogic
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;admin:secruity
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;joe:password
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mary:password
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;system:sercurity
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;wlcsystem: wlcsystem
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;weblogic:Oracle@123
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;webshell管理工具&#34;&gt;webshell管理工具
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;菜刀&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;base64加密，php马有eval，(base64_decode ($POST[z0])),&amp;amp;z0=QGluaV9zZXQ&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;蚁剑&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;以 0x 开头的参数名，@ini_set(&amp;ldquo;display_errors&amp;rdquo;,&amp;ldquo;0&amp;rdquo;)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;冰蝎&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1、大量的 content-type：application，content-type 为 application/octet-stream。&lt;/p&gt;
+&lt;p&gt;2、默认内置 16 个 ua，content-length 请求长度payload 都为定长&lt;/p&gt;
+&lt;p&gt;3、Accept头有application/xhtml+xmlapplication/xmlapplication/signed-exchange属于弱 特征&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;哥斯拉&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1、pass =eval(base64_decode&amp;hellip;，pass=加密数据&lt;/p&gt;
+&lt;p&gt;2、user-agent,accept,accept-language 固定&lt;/p&gt;
+&lt;p&gt;一共会产生3个 POST 数据包，POST请求报文中参数名都是 pass （即shell的连接密码），参 数值都是加密数据。&lt;/p&gt;
+&lt;h2 id=&#34;windowslinux应急响应流程&#34;&gt;windows+Linux应急响应流程
+&lt;/h2&gt;&lt;p&gt;检查系统账号安全查看服务器是否有&lt;code&gt;弱口令&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;远程管理端口是否对&lt;code&gt;公网&lt;/code&gt;开放&lt;/p&gt;
+&lt;p&gt;查看服务器是否存在&lt;code&gt;可疑&lt;/code&gt;账号、&lt;code&gt;新增&lt;/code&gt;账号&lt;/p&gt;
+&lt;p&gt;查看服务器是否存在&lt;code&gt;隐藏&lt;/code&gt;账号、&lt;code&gt;克隆&lt;/code&gt;账号&lt;/p&gt;
+&lt;p&gt;检查&lt;code&gt;异常端口、进程&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;检查&lt;code&gt;启动项、计划任务、服务&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;查看&lt;code&gt;可疑文件和目录&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;查看&lt;code&gt;webshell创建的时间&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&#34;windows入侵排查思路&#34;&gt;&lt;strong&gt;Windows入侵排查思路&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;1.检查&lt;code&gt;系统账号&lt;/code&gt;安全 2.查看服务器是否有弱口令，&lt;code&gt;远程管理端口&lt;/code&gt;(3389)是否对&lt;code&gt;公网开放&lt;/code&gt;（使用 &lt;code&gt;netstat -ano&lt;/code&gt; 命令、或者问服务器管理员） 3.lusrmgr.msc(本地用户和本地用户组) 快捷命令查 看服务器是否存在&lt;code&gt;可疑账号&lt;/code&gt;、新增账号，如有管理员群组的（Administrators）里的新增账户， 如有，请立即禁用或删除掉 4.用 D 盾或者注册表(regedit)中查看服务器是否存在隐藏账号、克隆 账号 5.结合日志，查看管理员登录时间、用户名是否存在异常，使用eventvwr.msc打开“&lt;code&gt;事件查&lt;/code&gt; 看器”，导出 &lt;code&gt;Windows 日志–安全&lt;/code&gt;，利用 Log Parser 进行分析 6.检查异常端口、进程 netstat - ano检查端口连接情况，是否有远程连接、&lt;code&gt;可疑连接&lt;/code&gt; 然后使用 tasklist |findstr PID 进行定位 7. 使用快捷命令 msconfig查看是否存在命名异常的启动项目， 输入regedit&lt;code&gt;注册表&lt;/code&gt;中查看&lt;code&gt;开机启动项&lt;/code&gt;是否正常，输入gpedit.msc查看本地组策略，使用&lt;code&gt;services.msc检查&lt;/code&gt;是否有异常服务 8.检查系统相关信息 systeminfo查看系统版本以及补丁信息 查找可疑目录及文件&lt;/p&gt;
+&lt;h4 id=&#34;linux入侵排查思路&#34;&gt;&lt;strong&gt;Linux入侵排查思路&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;bash的账户，正常为/nologin 2.查看本机开启端口服务信息 netstat -anlutp,然后去查看每个开 启服务所产生的日志信息 （var/log目录下）（举例如何查看mysql日志，首先登录mysql，然后 使用 show variables like &amp;lsquo;%general_log%&amp;rsquo; 查看日志是否开启和路径信息） 二、 服务入侵排查  1.使用last命令检查系统登录日志，统计ip登录错误次数和登录情况 2.使用 ls -l 查看  /etc/passwd文件 的修改时间 查看是否有特权用户 查看网站开启的端口ss -anlutp 3.使用ps - elf 看UID为0的进程 查看ssh的公钥是否被修改 4.查看网站根目录（/var/www）下是否存在可疑 文件 5.查看计划任务 /etc/crontab 三、异常启动排查 1.ps -elf 查看进程 2.查看linux 系统服务  /etc/rc.d/init.d 3.查看用户自定义开机启动程序 /etc/rc.d/rc.local&lt;/p&gt;
+&lt;h4 id=&#34;应急响应流程&#34;&gt;&lt;strong&gt;应急响应流程&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;1、收集信息：搜集客户信息和中毒信息，备份&lt;/p&gt;
+&lt;p&gt;2、判断类型：判断是否是安全事件、是何种安全事件（勒索病毒、挖矿、断网、ddos等）&lt;/p&gt;
+&lt;p&gt;3、深入分析：日志分析、进程分析、启动项分析、样本分析&lt;/p&gt;
+&lt;p&gt;4、清理处置：杀掉恶意进程、删除恶意文件、打补丁、修复文件&lt;/p&gt;
+&lt;p&gt;5、产出报告：整理并输出完整的安全事件报告&lt;/p&gt;
+&lt;h4 id=&#34;windows应急&#34;&gt;&lt;strong&gt;windows应急&lt;/strong&gt;
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;1.查看系统账号安全&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;查看服务器是否有弱口令、可疑账号、隐藏账号、克隆账号、远程管理端口是否对公网开放&lt;/p&gt;
+&lt;p&gt;win+r（eventwmr.msc）查看系统日志，查看管理员登录时间、用户名是否存在异常&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2.检查异常端口、进程&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;netstat -ano 检查端口连接情况，是否有远程连接、可疑连接&lt;/p&gt;
+&lt;p&gt;tasklist | findstr &amp;ldquo;PID&amp;quot;根据pid定位进程&lt;/p&gt;
+&lt;p&gt;使用功能查杀工具&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3.启动项检查、计划任务、服务&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;检查服务器是否有异常的启动项，msconfig看一下启动项是否有可以的启动&lt;/p&gt;
+&lt;p&gt;检查计划任务，查看计划任务属性，可以发现木马文件的路径&lt;/p&gt;
+&lt;p&gt;见擦汗服务自启动，services.msc注意服务状态和启动类型，检查是否有异常服务&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;4.检查系统相关信息&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;查看系统版本以及补丁信息 systeminfo&lt;/p&gt;
+&lt;p&gt;查找可以目录及文件 是否有新建用户目录 分析最近打开分析可疑文件 （%UserProfile%\Recent）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5.自动化查杀&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用360 火绒剑 webshell后门可以使用d盾 河马等&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;6.日志分析&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;360星图日志分析工具 ELK分析平台&lt;/p&gt;
+&lt;h4 id=&#34;linux应急&#34;&gt;linux应急
+&lt;/h4&gt;&lt;p&gt;1、检查用户及密码文件/etc/passwd、/etc/shadow 是否存在多余帐号，主要看一下帐号后面 是否是 nologin,如果没有 nologin 就要注意；&lt;/p&gt;
+&lt;p&gt;2、通过 who 命令查看当前登录用户（tty 本地登陆 pts 远程登录）、w 命令查看系统信息，想 知道某一时刻用户的行为、uptime查看登陆多久、多少用户，负载；&lt;/p&gt;
+&lt;p&gt;3、修改/etc/profile的文件，在尾部添加相应显示间、日期、ip、命令脚本代码，这样输入 history命令就会详细显示攻击者 ip、时间历史命令等；&lt;/p&gt;
+&lt;p&gt;4、用 netstat -antlp|more命令分析可疑端口、IP、PID，查看下 pid 所对应的进程文件路径， 运行ls -l /proc/$PID/exe 或 file /proc/$PID/exe（$PID 为对应的pid 号）；&lt;/p&gt;
+&lt;p&gt;5、使用ps命令，分析进程 ps aux | grep pid&lt;/p&gt;
+&lt;p&gt;6、使用 vi /etc/inittab 查看系统当前运行级别，通过运行级别找到/etc/rc.d/rc[0~6].d对应目录 是否存在可疑文件；&lt;/p&gt;
+&lt;p&gt;7、看一下crontab定时任务是否存在可疑启用脚本；&lt;/p&gt;
+&lt;p&gt;8、使用chkconfig &amp;ndash;list 查看是否存在可疑服务；&lt;/p&gt;
+&lt;p&gt;9、通过grep awk命令分析/var/log/secure安全日志里面是否存在攻击痕迹；&lt;/p&gt;
+&lt;p&gt;10、chkrootkit、rkhunter、Clamav 病毒后门查杀工具对 Linux 系统文件查杀；&lt;/p&gt;
+&lt;p&gt;11、如果有 Web 站点，可通过 D 盾、河马查杀工具进行查杀或者手工对代码按脚本木马关键 字、关键涵数（evel、system、shell_exec、exec、passthru system、popen）进行查杀 Webshell 后门。&lt;/p&gt;
+&lt;h2 id=&#34;windows事件id&#34;&gt;windows事件ID
+&lt;/h2&gt;&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;事件ID&lt;/th&gt;
+          &lt;th style=&#34;text-align: center&#34;&gt;说明&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;4624&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;登录成功&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;4625&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;登录失败&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;4634&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;注销成功&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;4647&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;用户启动的注销&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;4672&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;使用超级用户（如管理员）进行登录&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;4720&lt;/td&gt;
+          &lt;td style=&#34;text-align: center&#34;&gt;创建用户&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&#34;sql注入是否误报&#34;&gt;sql注入是否误报
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;如何判断是攻击还是误报&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;第一时间去判断内网还是外网，内网大部分都是172 192 10 如果是内网对内网，大概率是真实业务，很少见打到内网，查询字段内容，响应包是否是正常业务，看状态码判断攻击成功&lt;/p&gt;
+&lt;p&gt;如果是外网，先去看状态码 如果是200，微步平台看是否是恶意ip 先上报封禁，攻击报文如果是正常业务 那我们对这个业务监控，如果是sql语句攻击，看里面报文的攻击语句，比如常见sleep函数延时注入，extractvalue、updatexml函数 的报错注入，把攻击行为给客服反馈过去&lt;/p&gt;
+&lt;h2 id=&#34;ssrf打redis&#34;&gt;ssrf打redis
+&lt;/h2&gt;&lt;p&gt;ssrf扫描内网,端口&lt;code&gt;6379&lt;/code&gt;是&lt;code&gt;redis&lt;/code&gt;,然后redis未授权漏洞利用&lt;/p&gt;
+&lt;p&gt;利用dict协议可以扫描开放的端口，探测指纹信息，可以攻击redis服务 dict://ip:port/info 截获get请求包和post请求包，再构造成符合gopher协议的请求，从而模拟redis通信&lt;/p&gt;
+&lt;p&gt;更改redis备份路径为ssh公钥存放目录（一般默认为/root/.ssh）并设置上传公钥的备份文件名字 为authorized_keys,将一开始生成的SSH公钥写入authorized_keys文件中。&lt;/p&gt;
+&lt;h2 id=&#34;php一句话木马&#34;&gt;PHP一句话木马
+&lt;/h2&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;php&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;eval&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;$_GET&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;cmd&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt; &lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;?php @eval($_POST[&amp;#39;cmd&amp;#39;]); ?&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;?php @eval($_REQUEST[&amp;#39;cmd&amp;#39;]); ?&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;&amp;lt;script language=&amp;#34;php&amp;#34;&amp;gt;eval($_GET[&amp;#39;cmd&amp;#39;]);&amp;lt;/script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;err&#34;&gt;GIF89a? &amp;lt;script language=&amp;#34;php&amp;#34;&amp;gt;eval($_REQUEST[&amp;#39;mima&amp;#39;])&amp;lt;/script&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;序列化反序列化及其流量特征&#34;&gt;序列化反序列化及其流量特征
+&lt;/h2&gt;&lt;p&gt;**序列化：**对象转换为字符串&lt;/p&gt;
+&lt;p&gt;**反序列化：**字符串转换为对象&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;流量特征：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;**shiro反序列化：**查看cookie中rememberme字段，恶意命令要从这里传入。判断是否有漏洞， 查看返回包set cookie：rememberme=deleteme，验证失败返回的标识符。&lt;/p&gt;
+&lt;p&gt;**fastjson反序列化：**请求报文中查找json格式的数据，重点看有无rmi或者出网的一些行为&lt;/p&gt;
+&lt;p&gt;**st2-045：**请求头中的Content-Type字段&lt;/p&gt;
+&lt;h2 id=&#34;常见的设备出现误报怎么办&#34;&gt;常见的设备,出现误报怎么办
+&lt;/h2&gt;&lt;p&gt;奇安信天眼,设备类型:全流量,天眼、EDR、全流量告警、态势感知、APT、蜜罐设备,微步tdp,青藤云HIDS,明御安全网关先去查看设备的完整流量日志等信息确认是否为误报，误报那就是规则问题，上报处置，提供规则优化建议&lt;/p&gt;
+&lt;h2 id=&#34;wireshark指令&#34;&gt;wireshark指令
+&lt;/h2&gt;&lt;p&gt;http contains &amp;ldquo;关键字&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;http.response.code == 200&lt;/p&gt;
+&lt;p&gt;http.request.method == POST&lt;/p&gt;
+&lt;p&gt;tcp.prot == 80&lt;/p&gt;
+&lt;p&gt;ip.addr == &amp;ldquo;10.1.1.1&amp;quot;ip.srcip.dst&lt;/p&gt;
+&lt;h2 id=&#34;中挖矿病毒怎么解决&#34;&gt;中挖矿病毒怎么解决
+&lt;/h2&gt;&lt;p&gt;首先ps -aux查看进程分析&lt;/p&gt;
+&lt;p&gt;然后top 分析算力，挖矿用到的算力比较多，对流量进行过滤，含有矿池服务器的流量就是挖矿病毒&lt;/p&gt;
+&lt;p&gt;最后kill进程，rm掉程序&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;删不掉这么办&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;先下线，然后检查挖矿是否有在内网传播及时下线所有被传播的主机、上机排查攻击痕迹、一般 可以从cpu占用情况，可以进程、开放端口、计划任务、服务项几个方面排查&lt;/p&gt;
+&lt;p&gt;将样本上传到在线分析平台，清除挖矿主程序主要就是双向封禁矿池地址、删除计划任务自启 动、删服务，结束恶意进程、删病毒&lt;/p&gt;
+&lt;p&gt;**删不掉：**确认一下一下是因为程序在使用，还是权限不够，更具具体情况采取措施 直接降权，降权到没有执行权限&lt;/p&gt;
+&lt;h2 id=&#34;拿到webshell不出网情况下怎么办&#34;&gt;拿到webshell不出网情况下怎么办
+&lt;/h2&gt;&lt;p&gt;reg上传去正向连接。探测出网协议，如dns，icmp&lt;/p&gt;
+&lt;h2 id=&#34;怎么排查java内存马&#34;&gt;怎么排查java内存马
+&lt;/h2&gt;&lt;p&gt;直接利用内存马检测工具去找，github也有很多检测脚本，手工的话可以分析web日志，filter或者listener类型的内存马，会有大量路径相同参数不同的url请求，或者页面不存在但是返回200的请求，分析web.xml文件，内存马的Filter是动态注册的，web.xml是没有配置的，也有可能是中间件漏洞通过代码执行加载内存马，这就可以去排查中间件的错误日志，像哥斯拉和冰蝎的内存马也会有跟webshell相似的特征，分析特殊的classloader加载，攻击者喜欢利用TemplatesImpl和&lt;code&gt;bcel&lt;/code&gt;加载内存马，因为内存马是驻留在内存里的，本地无class文件，通过检测Filter对应的ClassLoader目录下是否存在class文件来判断，也可以把内存中所有的Filter的class dump出来，使用工具分析是否存在恶意代码&lt;/p&gt;
+&lt;h2 id=&#34;蜜罐原理&#34;&gt;蜜罐原理
+&lt;/h2&gt;&lt;p&gt;**创建虚拟环境：**在网络中创建一个看似易受攻击的虚拟环境，该环境模拟真实系统的一部分或全 部功能，包括应用程序、服务和操作系统。&lt;/p&gt;
+&lt;p&gt;**引诱攻击者：**通过暴露蜜罐的存在，例如通过公开可访问的IP地址或虚假的网站，吸引攻击者主 动尝试入侵、扫描或攻击蜜罐系统。&lt;/p&gt;
+&lt;p&gt;**监测和记录：**一旦攻击者进入蜜罐系统，蜜罐会记录攻击者的行为、攻击技术和使用的工具。  这些信息对于理解攻击者的策略和行为非常有价值。&lt;/p&gt;
+&lt;p&gt;**分析和响应：**通过分析记录的数据，研究人员可以识别攻击者的行为模式、漏洞利用方法和漏洞 的目标。&lt;/p&gt;
+&lt;p&gt;这些信息可以用于改进真实系统的安全性，及时发现和应对新的威胁。  蜜罐的优势在于能够提供高质量的&lt;code&gt;攻击数据和情报&lt;/code&gt;，帮助安全团队更好地了解攻击者的&lt;code&gt;行为模式和目的&lt;/code&gt;，加强防御措施并及时应对威胁。&lt;/p&gt;
+&lt;p&gt;然而，蜜罐也需要专业人员来设计、部署和管理，以确保其安全性和有效性，并避免对真实系统 造成潜在的风险。&lt;/p&gt;
+&lt;h2 id=&#34;内存马查杀原理&#34;&gt;内存马查杀&amp;amp;原理
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;java内存马原理&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;通过在Java虚拟机（JVM）中运行的恶意代码，实现对被攻击者系统的远程控制。其原理是通过在Java虚拟机中注入特定的Java类、变量或方法等Java对象，然后在Java虚拟机中运行这些代码，实现对受害者机器的远程控制&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;java内存马排查&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;利用Java Agent技术遍历所有已经加载到内存中的class。  先判断是否是内存马，是则进入内存查杀。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;识别&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1，filter名字很特别&lt;/p&gt;
+&lt;p&gt;2，filter优先级是第一位&lt;/p&gt;
+&lt;p&gt;3，对比web.xml中没有filter配置&lt;/p&gt;
+&lt;p&gt;4，特殊classloader加载&lt;/p&gt;
+&lt;p&gt;5，对应的classloader路径下没有class文件&lt;/p&gt;
+&lt;p&gt;6，Filter的doFilter方法中 有恶意代码&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;清除&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;1、清除内存马中的Filter的恶意代码，2、 模拟中间件注销Filter&lt;/p&gt;
+&lt;h2 id=&#34;常见的危险php函数总结&#34;&gt;常见的危险PHP函数总结
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;eval() — 把字符串作为PHP代码执行&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;语法eval( string $code ) : mixed&lt;/p&gt;
+&lt;p&gt;把字符串 code 作为PHP代码执行。&lt;/p&gt;
+&lt;p&gt;这个函数一般都是攻击者用的，没什么人会拿这个放到自己的源码里面&lt;/p&gt;
+&lt;p&gt;PHP官方也给出了警告&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220170106453-564936346.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240627111043558&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;assert() — 检查一个断言是否为 false （把字符串作为PHP代码执行）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;语法&lt;/p&gt;
+&lt;p&gt;PHP 5&lt;/p&gt;
+&lt;p&gt;assert( mixed $assertion , string $description = ? ) : bool&lt;/p&gt;
+&lt;p&gt;PHP 7&lt;/p&gt;
+&lt;p&gt;assert( mixed $assertion , Throwable $exception = ? ) : bool&lt;/p&gt;
+&lt;p&gt;assert()会检查指定的 assertion 并在结果为 false 时采取适当的行动（把字符串  $assertion 作为PHP代码执行）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;preg_replace — 执行一个正则表达式的搜索和替换&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;语法&lt;/p&gt;
+&lt;p&gt;preg_replace( mixed $pattern , mixed $replacement , mixed $subject , int  $limit = -1 , int &amp;amp;$count = ? ) : mixed&lt;/p&gt;
+&lt;p&gt;搜索 subject 中匹配 pattern 的部分，以 replacement 进行替换。&lt;/p&gt;
+&lt;p&gt;/e 修正符使 preg_replace() 将 replacement 参数当作 PHP 代码&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;preg_replace(&amp;#34;/test/e&amp;#34;,$_GET[&amp;#34;h&amp;#34;],&amp;#34;jutst test&amp;#34;);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;如果我们提交 ?h=phpinfo()，/e就会将h参数当做PHP代码，phpinfo()将会被执行。&lt;/p&gt;
+&lt;h4 id=&#34;引发命令执行的危险函数&#34;&gt;引发命令执行的危险函数
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;system — 执行外部程序，并且显示输出&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;说明&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;system&lt;/code&gt;( string &lt;code&gt;$command&lt;/code&gt; , int &lt;code&gt;&amp;amp;$return_var&lt;/code&gt; = ? ) : string&lt;/p&gt;
+&lt;p&gt;同 C 版本的 &lt;code&gt;system()&lt;/code&gt;函数一样， 本函数执行 &lt;code&gt;command&lt;/code&gt; 参数所指定的命令， 并且输出执行结果。&lt;/p&gt;
+&lt;p&gt;如果 PHP 运行在服务器模块中， system()函数还会尝试在每行输出完毕之后， 自动刷新 web服务器的输出缓存。&lt;/p&gt;
+&lt;p&gt;如果要获取一个命令未经任何处理的 原始输出，请使用 passthru()函数。&lt;/p&gt;
+&lt;p&gt;举个例子&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;php&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;system&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;whoami&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220170106357-152139748.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240627111507963&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;exec — 执行一个外部程序&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;exec()执行 command 参数所指定的命令&lt;/p&gt;
+&lt;p&gt;举个例子&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;php&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;exec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;whoami&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220170106400-1934865218.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240627111548732&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;shell_exec — 通过 shell 环境执行命令，并且将完整的输出以字 符串的方式返回。&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;php&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;shell_exec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;whoami&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;passthru — 执行外部程序并且显示原始输出&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-php&#34; data-lang=&#34;php&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;?&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;php&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;passthru&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;whoami&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;?&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h4 id=&#34;引发文件包含的危险函数&#34;&gt;引发文件包含的危险函数
+&lt;/h4&gt;&lt;p&gt;主要作用为包含并运行指定文件。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;include()：代码执行到此函数时才将文件包含进来，发⽣错误时只警告并继续执行&lt;/li&gt;
+&lt;li&gt;include_once()：功能和前者一样，区别在于调用同一文件时，程序只调用一次&lt;/li&gt;
+&lt;li&gt;require()：立即调用此函数包含文件，发⽣错误时，会输出错误信息 并⽴即终⽌程序&lt;/li&gt;
+&lt;li&gt;require_once()：功能和前者一样，区别在于调用同一文件时，程序只调用一次&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;include $file;&lt;/p&gt;
+&lt;p&gt;在变量 $file 可控的情况下，我们就可以包含任意文件，从而达到 getshell 的目的。&lt;/p&gt;
+&lt;p&gt;另外，在不同的配置环境下，可以包含不同的文件。&lt;/p&gt;
+&lt;p&gt;因此又分为远程文件包含和本地文件包含。&lt;/p&gt;
+&lt;p&gt;包含函数也能够读取任意文件内容，这就需要用到【支持的协议和封装协议】和【过滤器】。&lt;/p&gt;
+&lt;p&gt;例如，利用php流filter读取任意文件&lt;/p&gt;
+&lt;p&gt;include($_GET[&amp;lsquo;file&amp;rsquo;]);&lt;/p&gt;
+&lt;p&gt;?file=php://filter/convert.base64-encode/resource=index.php&lt;/p&gt;
+&lt;p&gt;解释：?file=php:// 协议 / 过滤器 / 文件&lt;/p&gt;
+&lt;h4 id=&#34;引发文件操作的危险函数&#34;&gt;引发文件操作的危险函数
+&lt;/h4&gt;&lt;p&gt;copy&lt;/p&gt;
+&lt;p&gt;file_get_contents()&lt;/p&gt;
+&lt;p&gt;highlight_file()&lt;/p&gt;
+&lt;p&gt;fopen()&lt;/p&gt;
+&lt;p&gt;read file()&lt;/p&gt;
+&lt;p&gt;fread()&lt;/p&gt;
+&lt;p&gt;fgetss()&lt;/p&gt;
+&lt;p&gt;fgets()&lt;/p&gt;
+&lt;p&gt;parse_ini_file()&lt;/p&gt;
+&lt;p&gt;show_source()&lt;/p&gt;
+&lt;p&gt;file()&lt;/p&gt;
+&lt;p&gt;任意文件读取、写入、删除往往是上面几个函数受到了控制（当然还有其他的函数）。  不同的函数在不同的场景有不同的作用和不同的利用手法。&lt;/p&gt;
+&lt;p&gt;读取：可以读取配置等文件，拿到key&lt;/p&gt;
+&lt;p&gt;写入：可以写入shell代码相关的内容&lt;/p&gt;
+&lt;p&gt;删除：可以删除.lock文件而可以重新安装覆盖&lt;/p&gt;
+&lt;p&gt;更多思路请自行挖掘测试！！&lt;/p&gt;
+&lt;h4 id=&#34;引发信息泄露的危险函数&#34;&gt;引发信息泄露的危险函数
+&lt;/h4&gt;&lt;p&gt;phpinfo — 输出关于 PHP 配置的信息&lt;/p&gt;
+&lt;p&gt;getenv — 获取一个环境变量的值&lt;/p&gt;
+&lt;p&gt;get_current_user — 获取当前 PHP 脚本所有者名称&lt;/p&gt;
+&lt;p&gt;getlastmod — 获取页面最后修改的时间&lt;/p&gt;
+&lt;p&gt;ini_get — 获取一个配置选项的值&lt;/p&gt;
+&lt;p&gt;glob — 寻找与模式匹配的文件路径&lt;/p&gt;
+&lt;h4 id=&#34;引发xee的危险函数&#34;&gt;引发XEE的危险函数
+&lt;/h4&gt;&lt;p&gt;__construct()&lt;/p&gt;
+&lt;p&gt;addAttribute()&lt;/p&gt;
+&lt;p&gt;addChild()&lt;/p&gt;
+&lt;p&gt;asXML()&lt;/p&gt;
+&lt;p&gt;attributes()&lt;/p&gt;
+&lt;p&gt;children()&lt;/p&gt;
+&lt;p&gt;getDocNamespaces()&lt;/p&gt;
+&lt;p&gt;getName()&lt;/p&gt;
+&lt;p&gt;getNamespaces()&lt;/p&gt;
+&lt;p&gt;registerXPathNamespace()&lt;/p&gt;
+&lt;p&gt;simplexml_import_dom()&lt;/p&gt;
+&lt;p&gt;simplexml_load_file()&lt;/p&gt;
+&lt;p&gt;simplexml_load_string()&lt;/p&gt;
+&lt;p&gt;xpath()&lt;/p&gt;
+&lt;h4 id=&#34;引发反序列化的危险函数&#34;&gt;引发反序列化的危险函数
+&lt;/h4&gt;&lt;p&gt;序列化函数：serialize()&lt;/p&gt;
+&lt;p&gt;反序列化函数：unserialize()&lt;/p&gt;
+&lt;p&gt;魔术函数：&lt;/p&gt;
+&lt;p&gt;__construc()&lt;/p&gt;
+&lt;p&gt;__destruct()&lt;/p&gt;
+&lt;p&gt;__call()&lt;/p&gt;
+&lt;p&gt;__callStatic()&lt;/p&gt;
+&lt;p&gt;__get()&lt;/p&gt;
+&lt;p&gt;__set()&lt;/p&gt;
+&lt;p&gt;__isset()&lt;/p&gt;
+&lt;p&gt;__unset()&lt;/p&gt;
+&lt;p&gt;__sleep()&lt;/p&gt;
+&lt;p&gt;__wakeup()&lt;/p&gt;
+&lt;p&gt;__toString()&lt;/p&gt;
+&lt;p&gt;__invoke()&lt;/p&gt;
+&lt;p&gt;__set_state()&lt;/p&gt;
+&lt;p&gt;__clone()&lt;/p&gt;
+&lt;p&gt;__debuginfo()&lt;/p&gt;
+&lt;h2 id=&#34;java危险函数&#34;&gt;Java危险函数
+&lt;/h2&gt;&lt;h4 id=&#34;java命令执行的函数&#34;&gt;Java命令执行的函数
+&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;Runtime类&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Runtime类是私有的， 类的对象无法通过这种方式注册： Runtime r = new Runtime() ;&lt;/p&gt;
+&lt;p&gt;只能通过静态方法（getRuntime）获取： Runtime r = Runtime.getRuntime()；&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ProcessBuilder类&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这种复现本质意义不大，重点是记一下敏感函数，&lt;/p&gt;
+&lt;p&gt;rce2Servlet.java&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ProcessImpl类ProcessImpl类通常是为ProcessBuilder.start()创建新进 程服务的，不能直接去调用。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;看到ProcessImpl类构造器私有，所以不能直接对其进行实例化，为了演示可以用反射进行调 用。&lt;/p&gt;
+&lt;p&gt;在获取到一个静态方法后，必须用setAccessible修改它的作用域，否则不能调用。&lt;/p&gt;
+&lt;h2 id=&#34;如何快速判定xss类型&#34;&gt;如何快速判定xss类型
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;存储型xss：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;发送⼀次带XSS代码的请求，以后这个⻚⾯的返回包⾥都会有XSS代码&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;反射型xss：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;发送⼀次带XSS代码的请求，只能在当前返回的数据包中发现XSS代码&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;dom型xss：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;发送⼀次带XSS代码的请求，在返回包⾥压根⼉就找不到XSS代码的影⼦&lt;/p&gt;
+&lt;h2 id=&#34;csrfssrf和重放攻击有什么区别&#34;&gt;csrf、ssrf和重放攻击有什么区别
+&lt;/h2&gt;&lt;p&gt;CSRF是跨站请求伪造攻击，由客户端发起&lt;/p&gt;
+&lt;p&gt;SSRF是服务器端请求伪造，由服务器发起&lt;/p&gt;
+&lt;p&gt;重放攻击是将截获的数据包进⾏重放，达到身份认证等⽬的&lt;/p&gt;
+&lt;h2 id=&#34;常见对应端口及服务&#34;&gt;常见对应端口及服务
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220170107949-1922336905.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610192109884&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;设备&#34;&gt;设备
+&lt;/h2&gt;&lt;p&gt;安全设备
+奇安信天眼
+设备类型:全流量
+大致使用方法
+天眼首页截图:&lt;/p&gt;
+&lt;p&gt;左边监测控制台,打开,有告警信息:&lt;/p&gt;
+&lt;p&gt;分析时觉得IP有问题可以在攻击IP中搜索&lt;/p&gt;
+&lt;p&gt;打开告警列表(奇安信网神?):&lt;/p&gt;
+&lt;p&gt;点击详情,显示如下内容:&lt;/p&gt;
+&lt;p&gt;微步tdp/tip
+TDP的
+主页面:&lt;/p&gt;
+&lt;p&gt;主要点击外部攻击的外部攻击项&lt;/p&gt;
+&lt;p&gt;告警主机项，上面可以查询IP：&lt;/p&gt;
+&lt;p&gt;内网渗透分析,被攻陷后可以看网络拓扑:&lt;/p&gt;
+&lt;p&gt;优势项：自动识别一些恶意IP，即答：tdp威胁情报发现有利于溯源分析&lt;/p&gt;
+&lt;p&gt;青藤云HIDS
+设备类型:全流量
+大致使用方法
+主页面，主机资产，安全台账功能，将可疑IP放到里面点击主机详情，看是不是内部IP：&lt;/p&gt;
+&lt;p&gt;点击入侵事件,查看告警,点击告警的漏洞名称,可以跳到类似于天眼的详情信息页面&lt;/p&gt;
+&lt;p&gt;可以查日志，筛选IP/域名/进程进行查询&lt;/p&gt;
+&lt;p&gt;优势项:可以直接发现暴力破解,不需要人工添加规则&lt;/p&gt;
+&lt;p&gt;明御安全网关
+总结优势
+HIDS：对全网信息捕捉&lt;/p&gt;
+&lt;p&gt;微步:&lt;/p&gt;
+&lt;p&gt;攻击发现，会显示攻击者画像 方便溯源分析
+威胁情报发现，发现恶意IP
+亚信：ei拦截的恶意文件会自动在an中运行检测生成报告&lt;/p&gt;
+&lt;p&gt;ddei邮件网关，过滤垃圾邮件，对恶意文件隔离
+ddan沙箱（=微步云沙箱）：检测恶意文件，分析恶意样本，收集攻击信息，生成行为报告&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>国护</title>
+        <link>https://flowers-boy.github.io/p/%E5%9B%BD%E6%8A%A4/</link>
+        <pubDate>Fri, 20 Dec 2024 16:47:53 +0800</pubDate>
+        
+        <guid>https://flowers-boy.github.io/p/%E5%9B%BD%E6%8A%A4/</guid>
+        <description>&lt;img src="https://flowers-boy.github.io/p/%E5%9B%BD%E6%8A%A4/HVV.png" alt="Featured image of post 国护" /&gt;&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34; /&gt;
+&lt;h2 id=&#34;719到达北京&#34;&gt;7.19到达北京
+&lt;/h2&gt;&lt;p&gt;初次到达北京，一堆事情等着处理，公司录入人脸，找租房，临时放置行李&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165153330-4007241.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;1&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165212343-1643430480.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240807195323145&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;拖着行李箱在北京街头游荡，找了家KFC临时休息会，害怕别人给我赶出来特意点了份套餐，现在想想当时也是爱面子，你不买东西人家也不会赶你走&lt;/p&gt;
+&lt;p&gt;没找到小超市，在附近问了一家家商铺，说把行李箱临时放一会，一直拒绝，刚开始问的时候还扭扭捏捏，后面越问越不慌张，毕竟也理解，都是打工人店里客流量也大，不想因为小钱担责任，后面遇到一位善良的药店姐姐，将手机号留在那就匆匆去公司录人脸&lt;/p&gt;
+&lt;p&gt;到公司被保安卡了，质问我长期还是临时访问，当时给我搞蒙圈了，客户也没给我报备姓名，最后项目经理来接我上去才通过。由于客户还没来得及给我报备，办了个临时的，人脸还需要明天再来一趟，到了刚好熟悉下工作流程&lt;/p&gt;
+&lt;p&gt;第二天继续去公司录入人脸培训，北京地铁与郑州地铁区别就是换乘，北京地铁换乘举例将近600多米，有点离谱了，第一次从住宿的地方计算了下将近一小时十分钟，因为住宿的地方在五环外面了，所以通勤时间比较久，熟悉工作内容，写word，整理excel，结束一天的工作&lt;/p&gt;
+&lt;p&gt;总结就是：万事开头难&lt;/p&gt;
+&lt;h2 id=&#34;802&#34;&gt;8.02
+&lt;/h2&gt;&lt;p&gt;在北京生活，消费高，吃饭也贵，干什么都贵，没钱啊，我就天天看哪个外卖最便宜，就是为了省点，这个省下的钱还是花到我身上了，当时给我气的，又没吃好又得了病难受的，去诊所人生地不熟，被宰了75，吃完药还是鼻塞，又在美团买了50的药，来来回回将近也花了150，自那日以后就该吃吃该喝喝了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165213565-276586649.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240807223438738&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;最后啊，知道了现场甲方有食堂，也不用吃那些明知道是预制饭还得买的外卖了，平常不忙的话也可以去甲方食堂去吃，很健康&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165147479-1326119783.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240807201157749&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;甲方也开始买零食了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165145931-2047723753.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240807201731351&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;暂时先到这吧&lt;/p&gt;
+&lt;h2 id=&#34;819&#34;&gt;8.19
+&lt;/h2&gt;&lt;p&gt;终于熬过一个月了，还好有甲方零食安慰，再坚持一月&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165157621-314914952.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240821212514203&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;830&#34;&gt;8.30
+&lt;/h2&gt;&lt;p&gt;突然通知要结束了，回光返照一样，这边预约的景点逛完手机就来消息项目要结束了
+&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165208083-732758323.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240831102121126&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220165216177-287788662.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240831103210975&#34;
+	
+	
+&gt;
+一个人在外面，踩了很多雷，都是历练了&lt;/p&gt;
+&lt;h2 id=&#34;总结&#34;&gt;总结
+&lt;/h2&gt;&lt;h3 id=&#34;hvv突发钓鱼事件&#34;&gt;HVV突发钓鱼事件
+&lt;/h3&gt;&lt;p&gt;27日下午收到电话，财务处收到“税务抽查通知”的可以邮件，经过排查相关人员点击附件图片，未访问图片内木马程序链接，调取网络日志与终端日志，确认其中一人尝试访问木马下载链接，但由于其及时关机，攻击人员服务器为自建阿里云服务器，网络较慢未完成下载运行过程，暂未发现攻击成功迹象&lt;/p&gt;
+&lt;p&gt;开展排查时间对已接受邮件进行断网，防止重启自动联网&lt;/p&gt;
+&lt;p&gt;使用安恒设备进行查看分析时间段内异常内向外流量，对设备导出被钓鱼邮件时间段内及终端的原始日志，分析外连IP&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;同时发现安恒监控设备时间与网络时间相差，使用NTA平台重启设备更新时间&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;目前分析gif文件应该没问题，gif里面那个链接，点击以后会下载一个9m多的压缩包，里面是一个23m左右的exe文件&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;35lduXzQ.rar&lt;/code&gt;解压后释放&lt;code&gt;35lduXzQ.exe&lt;/code&gt;，&lt;code&gt;35lduXzQ.exe&lt;/code&gt;主程序释放了一个 &lt;code&gt;t0mcat.exe&lt;/code&gt; ，这个程序执行又释放了几个dll，然后回连137.59.16.4。&lt;/p&gt;
+&lt;p&gt;同时对回连木马地址进行封禁&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>春秋云境-GreatWall综合渗透</title>
         <link>https://flowers-boy.github.io/p/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-greatwall%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/</link>
         <pubDate>Thu, 19 Dec 2024 20:50:49 +0800</pubDate>
@@ -16,6 +719,7 @@
         <description>&lt;img src="https://flowers-boy.github.io/p/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-greatwall%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/GreatWall.png" alt="Featured image of post 春秋云境-GreatWall综合渗透" /&gt;&lt;blockquote&gt;
 &lt;p&gt;在这个靶场中，您将扮演一名渗透测试工程师，接受雇佣任务来评估“SmartLink Technologies Ltd.”公司的网络安全状况。 您的任务是首先入侵该公司暴露在公网上的应用服务，然后运用后渗透技巧深入 SmartLink公司的内部网络。在这个过程中，您将寻找潜在的弱点和漏洞，并逐一接管所有服务，从而控制整个内部网络。靶场中共设置了6个Flag，它们分布在不同的靶机上，您需要找到并获取这些 Flag 作为您的成就目标。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34; /&gt;
 &lt;h2 id=&#34;前置知识&#34;&gt;前置知识
 &lt;/h2&gt;&lt;p&gt;建议把以下知识点吃透再去打靶机，建立综合渗透思维&lt;/p&gt;
 &lt;blockquote&gt;
@@ -42,12 +746,12 @@
 &lt;h2 id=&#34;813071173-公网入口&#34;&gt;8.130.71.173-公网入口
 &lt;/h2&gt;&lt;p&gt;使用fscan进行扫描&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;8.130.71.173:22 open
-8.130.71.173:8080 open
-8.130.71.173:80 open
-[&lt;em&gt;] WebTitle http://8.130.71.173       code:200 len:10887  title:&amp;quot;&amp;quot;
-[&lt;/em&gt;] WebTitle http://8.130.71.173:8080  code:200 len:1027   title:Login Form
-[+] PocScan http://8.130.71.173:8080 poc-yaml-thinkphp5023-method-rce poc1&lt;/p&gt;
+&lt;p&gt;8.130.71.173:22 open&lt;/p&gt;
+&lt;p&gt;8.130.71.173:8080 open&lt;/p&gt;
+&lt;p&gt;8.130.71.173:80 open&lt;/p&gt;
+&lt;p&gt;WebTitle http://8.130.71.173       code:200 len:10887  title:&amp;quot;&amp;quot;&lt;/p&gt;
+&lt;p&gt;WebTitle http://8.130.71.173:8080  code:200 len:1027   title:Login Form&lt;/p&gt;
+&lt;p&gt;PocScan http://8.130.71.173:8080 poc-yaml-thinkphp5023-method-rce poc1&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;发现&lt;code&gt;8080&lt;/code&gt;端口存在&lt;code&gt;thinkphp5023-method-rce&lt;/code&gt;漏洞，工具getshell一把梭&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220091922723-75050722.png&#34;
@@ -522,7 +1226,322 @@ spring.datasource.password=My3q1i4oZkJm3&lt;/p&gt;
         <pubDate>Mon, 16 Dec 2024 23:38:05 +0800</pubDate>
         
         <guid>https://flowers-boy.github.io/p/%E6%97%85%E6%B8%B8/</guid>
-        <description>&lt;img src="https://flowers-boy.github.io/p/%E6%97%85%E6%B8%B8/%E5%B0%81%E9%9D%A2.jpg" alt="Featured image of post 旅游" /&gt;</description>
+        <description>&lt;img src="https://flowers-boy.github.io/p/%E6%97%85%E6%B8%B8/%E5%B0%81%E9%9D%A2.jpg" alt="Featured image of post 旅游" /&gt;&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34; /&gt;
+&lt;p&gt;铁路会员积分破一万啦&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164233184-387447719.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241220164235741&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;23年二月-商丘&#34;&gt;23年二月 商丘
+&lt;/h2&gt;&lt;p&gt;骑马&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164254323-498622647.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240609235854475&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;赛车&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164311813-858718096.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240609235916947&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;23年四月-开封&#34;&gt;23年四月 开封
+&lt;/h2&gt;&lt;p&gt;开封鼓楼&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164321914-1116738095.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610000258835&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;期待已久的打铁花，现场很美，画质可能被图床压缩了，没有现场好看&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164322167-2144065202.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610000624124&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;(｡･∀･)ﾉﾞ嗨&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164321552-135311713.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610000958816&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;23年四月-洛阳&#34;&gt;23年四月 洛阳
+&lt;/h2&gt;&lt;p&gt;千窟为佑 太平无忧&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164332600-436183251.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610001414507&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;无忧无虑&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164350652-1939270311.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610001625964&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;23年五月-郑州登封&#34;&gt;23年五月 郑州登封
+&lt;/h2&gt;&lt;p&gt;青春没有售价，嵩山就在脚下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164348599-193542752.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610002527596&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164348905-637682214.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610002555576&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;23年十二月-武汉&#34;&gt;23年十二月 武汉
+&lt;/h2&gt;&lt;p&gt;古人西辞黄鹤楼，烟花十二月去武汉&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164345651-242489887.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610002923127&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;步行街江汉关&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164348650-1773787372.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610003027550&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;长江大桥，很清爽&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164346778-757183192.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610003051755&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164355943-106335595.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610003513205&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;24年二月-徐州&#34;&gt;24年二月 徐州
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164536050-782799520.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610003803536&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164456526-1892089818.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610003904633&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164420501-1196099135.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610004010404&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;24年四月-焦作&#34;&gt;24年四月 焦作
+&lt;/h2&gt;&lt;p&gt;拿自由敬青春&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164550835-1941651300.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610004430581&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;一叶扁舟&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164540950-1434746331.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610004505454&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164556410-998043222.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610004530177&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164541233-2002059991.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610004637830&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;24年四月-西安&#34;&gt;24年四月 西安
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164510921-615535412.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610004959118&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164454684-938040882.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610005016115&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164437597-1175187490.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240610005115208&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h2 id=&#34;24年7月-北京&#34;&gt;24年7月 北京
+&lt;/h2&gt;&lt;p&gt;HVV经历&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164512236-751819986.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240831105619740&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164540068-1760899501.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240831105828978&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164521841-1171675312.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240831111349412&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164445612-934628280.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240831111452432&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220164506123-872343999.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20240831111527493&#34;
+	
+	
+&gt;&lt;/p&gt;
+</description>
         </item>
         <item>
         <title>归档</title>

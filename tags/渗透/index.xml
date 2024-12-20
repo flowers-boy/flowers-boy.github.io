@@ -16,6 +16,7 @@
         <description>&lt;img src="https://flowers-boy.github.io/p/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-greatwall%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/GreatWall.png" alt="Featured image of post 春秋云境-GreatWall综合渗透" /&gt;&lt;blockquote&gt;
 &lt;p&gt;在这个靶场中，您将扮演一名渗透测试工程师，接受雇佣任务来评估“SmartLink Technologies Ltd.”公司的网络安全状况。 您的任务是首先入侵该公司暴露在公网上的应用服务，然后运用后渗透技巧深入 SmartLink公司的内部网络。在这个过程中，您将寻找潜在的弱点和漏洞，并逐一接管所有服务，从而控制整个内部网络。靶场中共设置了6个Flag，它们分布在不同的靶机上，您需要找到并获取这些 Flag 作为您的成就目标。&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;meta name=&#34;referrer&#34; content=&#34;no-referrer&#34; /&gt;
 &lt;h2 id=&#34;前置知识&#34;&gt;前置知识
 &lt;/h2&gt;&lt;p&gt;建议把以下知识点吃透再去打靶机，建立综合渗透思维&lt;/p&gt;
 &lt;blockquote&gt;
@@ -42,12 +43,12 @@
 &lt;h2 id=&#34;813071173-公网入口&#34;&gt;8.130.71.173-公网入口
 &lt;/h2&gt;&lt;p&gt;使用fscan进行扫描&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;8.130.71.173:22 open
-8.130.71.173:8080 open
-8.130.71.173:80 open
-[&lt;em&gt;] WebTitle http://8.130.71.173       code:200 len:10887  title:&amp;quot;&amp;quot;
-[&lt;/em&gt;] WebTitle http://8.130.71.173:8080  code:200 len:1027   title:Login Form
-[+] PocScan http://8.130.71.173:8080 poc-yaml-thinkphp5023-method-rce poc1&lt;/p&gt;
+&lt;p&gt;8.130.71.173:22 open&lt;/p&gt;
+&lt;p&gt;8.130.71.173:8080 open&lt;/p&gt;
+&lt;p&gt;8.130.71.173:80 open&lt;/p&gt;
+&lt;p&gt;WebTitle http://8.130.71.173       code:200 len:10887  title:&amp;quot;&amp;quot;&lt;/p&gt;
+&lt;p&gt;WebTitle http://8.130.71.173:8080  code:200 len:1027   title:Login Form&lt;/p&gt;
+&lt;p&gt;PocScan http://8.130.71.173:8080 poc-yaml-thinkphp5023-method-rce poc1&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;发现&lt;code&gt;8080&lt;/code&gt;端口存在&lt;code&gt;thinkphp5023-method-rce&lt;/code&gt;漏洞，工具getshell一把梭&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220091922723-75050722.png&#34;
