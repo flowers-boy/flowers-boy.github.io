@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
-        <title>Posts on 关根</title>
-        <link>https://flowers-boy.github.io/post/</link>
-        <description>Recent content in Posts on 关根</description>
+        <title>渗透 on 关根</title>
+        <link>https://flowers-boy.github.io/tags/%E6%B8%97%E9%80%8F/</link>
+        <description>Recent content in 渗透 on 关根</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
         <copyright>关根</copyright>
-        <lastBuildDate>Thu, 19 Dec 2024 20:50:49 +0800</lastBuildDate><atom:link href="https://flowers-boy.github.io/post/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 19 Dec 2024 20:50:49 +0800</lastBuildDate><atom:link href="https://flowers-boy.github.io/tags/%E6%B8%97%E9%80%8F/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>春秋云境-GreatWall综合渗透</title>
         <link>https://flowers-boy.github.io/p/%E6%98%A5%E7%A7%8B%E4%BA%91%E5%A2%83-greatwall%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/</link>
         <pubDate>Thu, 19 Dec 2024 20:50:49 +0800</pubDate>
@@ -515,14 +515,6 @@ spring.datasource.password=My3q1i4oZkJm3&lt;/p&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;</description>
-        </item>
-        <item>
-        <title>旅游</title>
-        <link>https://flowers-boy.github.io/p/%E6%97%85%E6%B8%B8/</link>
-        <pubDate>Mon, 16 Dec 2024 23:38:05 +0800</pubDate>
-        
-        <guid>https://flowers-boy.github.io/p/%E6%97%85%E6%B8%B8/</guid>
-        <description>&lt;img src="https://flowers-boy.github.io/p/%E6%97%85%E6%B8%B8/%E5%B0%81%E9%9D%A2.jpg" alt="Featured image of post 旅游" /&gt;</description>
         </item>
         
     </channel>
