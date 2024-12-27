@@ -61,6 +61,16 @@
 	
 	
 &gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227140155299-964448020.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241227140144307&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;ifconfig&lt;/p&gt;
 &lt;p&gt;公网：8.130.71.173&lt;/p&gt;
@@ -110,19 +120,19 @@
 &lt;blockquote&gt;
 &lt;p&gt;公网vps&lt;/p&gt;
 &lt;p&gt;frps&lt;/p&gt;
-&lt;p&gt;[common]
-bind_port = 7000&lt;/p&gt;
+&lt;p&gt;[common]&lt;/p&gt;
+&lt;p&gt;bind_port = 7000&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;blockquote&gt;
 &lt;p&gt;webshell/8.130.71.173&lt;/p&gt;
 &lt;p&gt;frpc&lt;/p&gt;
-&lt;p&gt;[common]
-server_addr = 公网服务器地址
-server_port = 7000&lt;/p&gt;
-&lt;p&gt;[socks5]
-type = tcp
-remote_port = 6000
-plugin = socks5&lt;/p&gt;
+&lt;p&gt;[common]&lt;/p&gt;
+&lt;p&gt;server_addr = 公网服务器地址&lt;/p&gt;
+&lt;p&gt;server_port = 7000&lt;/p&gt;
+&lt;p&gt;[socks5]&lt;/p&gt;
+&lt;p&gt;type = tcp&lt;/p&gt;
+&lt;p&gt;remote_port = 6000&lt;/p&gt;
+&lt;p&gt;plugin = socks5&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;proxifier全局流量代理&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241220144208492-266597381.png&#34;
@@ -138,7 +148,17 @@ plugin = socks5&lt;/p&gt;
 &lt;p&gt;具体可见文章：&lt;a class=&#34;link&#34; href=&#34;https://mp.weixin.qq.com/s/Cq-DdH1DseOJIcEGwb0RWg&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;关于内网代理、vm、frp、proxifier全局流量转发等问题&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;172282326-新翔0a&#34;&gt;172.28.23.26-新翔0A
-&lt;/h2&gt;&lt;blockquote&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227140833292-2022108997.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241227140811168&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
 &lt;p&gt;[+] ftp 172.28.23.26:21:anonymous&lt;/p&gt;
 &lt;p&gt;[-&amp;gt;]OASystem.zip&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -343,7 +363,17 @@ plugin = socks5&lt;/p&gt;
 	
 &gt;&lt;/p&gt;
 &lt;h2 id=&#34;172282333-erp后台&#34;&gt;172.28.23.33-ERP后台
-&lt;/h2&gt;&lt;blockquote&gt;
+&lt;/h2&gt;&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227141339293-238308030.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241227141336756&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
 &lt;p&gt;[+] PocScan &lt;a class=&#34;link&#34; href=&#34;http://172.28.23.33:8080/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;http://172.28.23.33:8080&lt;/a&gt; poc-yaml-spring-actuator-heapdump-file&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -410,24 +440,24 @@ plugin = socks5&lt;/p&gt;
 &gt;&lt;/p&gt;
 &lt;h3 id=&#34;内网二层代理&#34;&gt;内网二层代理
 &lt;/h3&gt;&lt;blockquote&gt;
-&lt;p&gt;8.130.71.173-公网入口&lt;/p&gt;
+&lt;p&gt;8.130.71.173-公网入口&amp;ndash;同机器172.28.23.17&lt;/p&gt;
 &lt;p&gt;frps&lt;/p&gt;
 &lt;p&gt;[common]
 bind_port = 7000&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;blockquote&gt;
-&lt;p&gt;172.28.23.26&lt;/p&gt;
+&lt;p&gt;172.28.23.33&lt;/p&gt;
 &lt;p&gt;frpc&lt;/p&gt;
 &lt;p&gt;[common]
-server_addr =172.28.23.17
-server_port = 7000&lt;/p&gt;
+server_addr =172.28.23.17&lt;/p&gt;
+&lt;p&gt;server_port = 7000&lt;/p&gt;
 &lt;p&gt;[socks5]
-type = tcp
-remote_port = 6000
-plugin = socks5&lt;/p&gt;
+type = tcp&lt;/p&gt;
+&lt;p&gt;remote_port = 6000&lt;/p&gt;
+&lt;p&gt;plugin = socks5&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;172221437-k8s-api未授权&#34;&gt;172.22.14.37-k8s API未授权
-&lt;/h3&gt;&lt;p&gt;靶机未拉起&lt;/p&gt;
+&lt;/h3&gt;&lt;p&gt;靶机访问不到，两次都打不开，很奇怪&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
 &lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
@@ -488,7 +518,8 @@ plugin = socks5&lt;/p&gt;
 	
 	
 &gt;&lt;/p&gt;
-&lt;p&gt;分析其他镜像找线索，&lt;code&gt;project/projectadmin&lt;/code&gt;镜像下找到另一份带有&lt;code&gt;ProjectAdmin-0.0.1-SNAPSHOT.jar&lt;/code&gt;包的文件&lt;/p&gt;
+&lt;h3 id=&#34;172221028-mysql-udf提权&#34;&gt;172.22.10.28-mysql-udf提权
+&lt;/h3&gt;&lt;p&gt;分析其他镜像找线索，&lt;code&gt;project/projectadmin&lt;/code&gt;镜像下找到另一份带有&lt;code&gt;ProjectAdmin-0.0.1-SNAPSHOT.jar&lt;/code&gt;包的文件&lt;/p&gt;
 &lt;p&gt;反编译，找到了数据库密码&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;172.22.10.28&lt;/p&gt;
@@ -506,6 +537,16 @@ spring.datasource.password=My3q1i4oZkJm3&lt;/p&gt;
 	
 &gt;&lt;/p&gt;
 &lt;p&gt;navicate都能连接，工具梭哈连接不到，真是奇怪&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://img2023.cnblogs.com/blog/3373819/202412/3373819-20241227145611482-2099446302.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;image-20241227145610664&#34;
+	
+	
+&gt;&lt;/p&gt;
 &lt;p&gt;没时间了，等沙砾赞够了再继续打吧&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
 &lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
